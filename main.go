@@ -4,7 +4,8 @@ import (
 	"LearnGoLang2/db"
 	"LearnGoLang2/handler"
 	"LearnGoLang2/log"
-	"context"
+	"LearnGoLang2/repository/repo_impl"
+	"LearnGoLang2/router"
 	"github.com/labstack/echo/v4"
 	"os"
 )
@@ -24,19 +25,21 @@ func main() {
 		DbName:   "LearnGolang2",
 	}
 
-	log.Error("Co loi xay ra")
-
 	sql.Connect()
 	defer sql.Close()
 
-	var email string
-	err := sql.Db.GetContext(context.Background(), &email, "select email from users where  email= $1", "abc@gmail.com")
-	if err != nil {
-		log.Error(err.Error())
-	}
 	e := echo.New()
-	e.GET("/", handler.Welcome)
-	e.GET("/user/sign-in", handler.HandleSignIn)
-	e.GET("/user/sign-up", handler.HandleSignUp)
+
+	userHandler := handler.UserHandler{
+		UserRepo: repo_impl.NewUserRepo(sql),
+	}
+
+	api := router.API{
+		Echo:        e,
+		Userhandler: userHandler,
+	}
+
+	api.SetupRouter()
+
 	e.Logger.Fatal(e.Start(":3000"))
 }

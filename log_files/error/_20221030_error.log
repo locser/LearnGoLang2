@@ -1,0 +1,9 @@
+time="2022-10-30T15:23:59.8753903+07:00" level=error msg="pq: duplicate key value violates unique constraint \"users_email_key\"" file="C:/Users/HUULOC/GolandProjects/LearnGoLang2/repository/repo_impl/user_repo_impl.go" line=41
+time="2022-10-30T15:24:24.9576528+07:00" level=error msg="pq: duplicate key value violates unique constraint \"users_email_key\"" file="C:/Users/HUULOC/GolandProjects/LearnGoLang2/repository/repo_impl/user_repo_impl.go" line=41
+time="2022-10-30T15:24:28.1352123+07:00" level=error msg="pq: duplicate key value violates unique constraint \"users_email_key\"" file="C:/Users/HUULOC/GolandProjects/LearnGoLang2/repository/repo_impl/user_repo_impl.go" line=41
+time="2022-10-30T15:24:29.3237041+07:00" level=error msg="pq: duplicate key value violates unique constraint \"users_email_key\"" file="C:/Users/HUULOC/GolandProjects/LearnGoLang2/repository/repo_impl/user_repo_impl.go" line=41
+time="2022-10-30T15:25:33.9059976+07:00" level=error msg="pq: duplicate key value violates unique constraint \"users_email_key\"" file="C:/Users/HUULOC/GolandProjects/LearnGoLang2/repository/repo_impl/user_repo_impl.go" line=41
+time="2022-10-30T15:38:32.0082548+07:00" level=error msg="pq: duplicate key value violates unique constraint \"users_email_key\"" file="C:/Users/HUULOC/GolandProjects/LearnGoLang2/repository/repo_impl/user_repo_impl.go" line=41
+time="2022-10-30T15:38:32.0158847+07:00" level=error msg="Lỗi: người dùng đã tồn tại" file="C:/Users/HUULOC/GolandProjects/LearnGoLang2/handler/user_handler.go" line=69
+time="2022-10-30T15:38:48.4827794+07:00" level=error msg="pq: duplicate key value violates unique constraint \"users_email_key\"" file="C:/Users/HUULOC/GolandProjects/LearnGoLang2/repository/repo_impl/user_repo_impl.go" line=41
+time="2022-10-30T15:38:48.4833132+07:00" level=error msg="Lỗi: người dùng đã tồn tại" file="C:/Users/HUULOC/GolandProjects/LearnGoLang2/handler/user_handler.go" line=69
