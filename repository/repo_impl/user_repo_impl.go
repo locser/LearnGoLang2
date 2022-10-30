@@ -3,9 +3,12 @@ package repo_impl
 import (
 	"LearnGoLang2/banana"
 	"LearnGoLang2/db"
+	"LearnGoLang2/log"
 	"LearnGoLang2/model"
+	req2 "LearnGoLang2/model/req"
 	"LearnGoLang2/repository"
 	"context"
+	"database/sql"
 	"github.com/lib/pq"
 )
 
@@ -29,7 +32,7 @@ CreatedAt time.Time `db:"created_at, omitempty"`
 UpdatedAt time.Time `db:"updated_at, omitempty"`
 Token     string
 */
-func (u UserRepoImpl) SaveUser(context context.Context, user model.User) (model.User, error) {
+func (u *UserRepoImpl) SaveUser(context context.Context, user model.User) (model.User, error) {
 	statment := `
 		INSERT INTO users(user_id, email, password, role, full_name, created_at, updated_at)		
 		VALUES (:user_id, :email, :password, :role, :full_name, :created_at,  :updated_at )
@@ -46,5 +49,19 @@ func (u UserRepoImpl) SaveUser(context context.Context, user model.User) (model.
 		}
 		return user, banana.SignUpFail
 	}
+	return user, nil
+}
+
+func (u *UserRepoImpl) CheckLogin(context context.Context, loginReq req2.ReqSignIn) (model.User, error) {
+	var user = model.User{}
+	err := u.sql.Db.GetContext(context, &user, "SELECT * FROM users WHERE email= $1", loginReq.Email)
+
+	if err != nil {
+		log.Error(err.Error())
+		if err == sql.ErrNoRows {
+			return user, banana.UserNotFound
+		}
+	}
+
 	return user, nil
 }
