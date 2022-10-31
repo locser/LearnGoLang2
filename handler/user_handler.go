@@ -5,10 +5,10 @@ import (
 	"LearnGoLang2/model"
 	req2 "LearnGoLang2/model/req"
 	"LearnGoLang2/repository"
-	security "LearnGoLang2/sercurity"
+	security "LearnGoLang2/security"
 	validator "github.com/go-playground/validator/v10"
 	uuid "github.com/google/uuid"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
 	"net/http"
 	"time"
 )
@@ -63,6 +63,19 @@ func (u *UserHandler) HandleSignUp(c echo.Context) error {
 	}
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
+
+	//gentoken
+	token, err := security.GenToken(user)
+	if err != nil {
+		log.Error(err.Error())
+		return c.JSON(http.StatusInternalServerError, model.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    err.Error(),
+			Data:       nil,
+		})
+	}
+
+	user.Token = token
 
 	user, err = u.UserRepo.SaveUser(c.Request().Context(), user)
 
@@ -124,10 +137,27 @@ func (u *UserHandler) HandleSignIn(c echo.Context) error {
 			Data:       nil,
 		})
 	}
+
+	//gentoken
+	token, err := security.GenToken(user)
+	if err != nil {
+		log.Error(err.Error())
+		return c.JSON(http.StatusInternalServerError, model.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    err.Error(),
+			Data:       nil,
+		})
+	}
+
+	user.Token = token
 	user.Password = ""
 	return c.JSON(http.StatusOK, model.Response{
 		StatusCode: http.StatusOK,
 		Message:    "Thành công -  Đăng nhập",
 		Data:       user,
 	})
+}
+
+func (u *UserHandler) HandleProfile(context echo.Context) error {
+	return nil
 }

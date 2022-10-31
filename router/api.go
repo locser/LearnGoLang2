@@ -2,7 +2,8 @@ package router
 
 import (
 	"LearnGoLang2/handler"
-	"github.com/labstack/echo/v4"
+	middleware2 "LearnGoLang2/middleware"
+	"github.com/labstack/echo"
 )
 
 type API struct {
@@ -11,7 +12,8 @@ type API struct {
 }
 
 func (api *API) SetupRouter() {
-	api.Echo.GET("/", handler.Welcome)
 	api.Echo.POST("/user/sign-in", api.Userhandler.HandleSignIn)
 	api.Echo.POST("/user/sign-up", api.Userhandler.HandleSignUp)
+	api.Echo.POST("/user/profile", api.Userhandler.HandleProfile, middleware2.JWTMiddleware())
+
 }
