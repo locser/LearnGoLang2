@@ -12,8 +12,12 @@ type API struct {
 }
 
 func (api *API) SetupRouter() {
+	// user
 	api.Echo.POST("/user/sign-in", api.Userhandler.HandleSignIn)
 	api.Echo.POST("/user/sign-up", api.Userhandler.HandleSignUp)
-	api.Echo.POST("/user/profile", api.Userhandler.HandleProfile, middleware2.JWTMiddleware())
 
+	// profile
+	user := api.Echo.Group("/user", middleware2.JWTMiddleware())
+	user.GET("/profile", api.Userhandler.HandleProfile)
+	user.PUT("/profile/update", api.Userhandler.UpdateProfile)
 }

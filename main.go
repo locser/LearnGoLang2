@@ -8,7 +8,6 @@ import (
 	"LearnGoLang2/repository/repo_impl"
 	"LearnGoLang2/router"
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
 	"os"
 )
 
@@ -34,7 +33,8 @@ func main() {
 	structValidator := helper.NewStructValidator()
 	structValidator.RegisterValidate()
 
-	e.Use(middleware.AddTrailingSlash())
+	e.Validator = structValidator
+
 	userHandler := handler.UserHandler{
 		UserRepo: repo_impl.NewUserRepo(sql),
 	}

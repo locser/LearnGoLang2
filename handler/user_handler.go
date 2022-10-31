@@ -1,15 +1,17 @@
 package handler
 
 import (
+	"LearnGoLang2/banana"
 	"LearnGoLang2/log"
 	"LearnGoLang2/model"
 	req2 "LearnGoLang2/model/req"
 	"LearnGoLang2/repository"
 	security "LearnGoLang2/security"
+	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	uuid "github.com/google/uuid"
 	"github.com/labstack/echo"
 	"net/http"
-	"time"
 )
 
 type UserHandler struct {
@@ -59,8 +61,16 @@ func (u *UserHandler) HandleSignUp(c echo.Context) error {
 		Role:     role,
 		Token:    "",
 	}
-	user.CreatedAt = time.Now()
-	user.UpdatedAt = time.Now()
+
+	user, err = u.UserRepo.SaveUser(c.Request().Context(), user)
+
+	if err != nil {
+		return c.JSON(http.StatusOK, model.Response{
+			StatusCode: http.StatusConflict,
+			Message:    err.Error(),
+			Data:       nil,
+		})
+	}
 
 	//gentoken
 	token, err := security.GenToken(user)
@@ -75,23 +85,12 @@ func (u *UserHandler) HandleSignUp(c echo.Context) error {
 
 	user.Token = token
 
-	user, err = u.UserRepo.SaveUser(c.Request().Context(), user)
+	return c.JSON(http.StatusOK, model.Response{
+		StatusCode: http.StatusOK,
+		Message:    "Thành công- Lưu User",
+		Data:       user,
+	})
 
-	if err != nil {
-		return c.JSON(http.StatusOK, model.Response{
-			StatusCode: http.StatusConflict,
-			Message:    err.Error(),
-			Data:       nil,
-		})
-	} else {
-		//Hide password
-		user.Password = ""
-		return c.JSON(http.StatusOK, model.Response{
-			StatusCode: http.StatusOK,
-			Message:    "Thành công- Lưu User",
-			Data:       user,
-		})
-	}
 }
 
 func (u *UserHandler) HandleSignIn(c echo.Context) error {
@@ -147,7 +146,6 @@ func (u *UserHandler) HandleSignIn(c echo.Context) error {
 	}
 
 	user.Token = token
-	user.Password = ""
 	return c.JSON(http.StatusOK, model.Response{
 		StatusCode: http.StatusOK,
 		Message:    "Thành công -  Đăng nhập",
@@ -156,5 +154,68 @@ func (u *UserHandler) HandleSignIn(c echo.Context) error {
 }
 
 func (u *UserHandler) HandleProfile(context echo.Context) error {
-	return nil
+	tokenData := context.Get("user").(*jwt.Token)
+	claims := tokenData.Claims.(*model.JwtCustomClaims)
+
+	user, err := u.UserRepo.SelectUserById(context.Request().Context(), claims.UserId)
+
+	if err != nil {
+		if err == banana.UserNotFound {
+			return context.JSON(http.StatusNotFound, model.Response{
+				StatusCode: http.StatusNotFound,
+				Message:    err.Error(),
+				Data:       nil,
+			})
+		}
+		fmt.Println(err.Error())
+		return context.JSON(http.StatusInternalServerError, model.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    err.Error(),
+			Data:       nil,
+		})
+	}
+
+	return context.JSON(http.StatusOK, model.Response{
+		StatusCode: http.StatusOK,
+		Message:    "Thành công -  Đăng nhập",
+		Data:       user,
+	})
+}
+
+func (u UserHandler) UpdateProfile(c echo.Context) error {
+	req := req2.ReqUpdateUser{}
+	if err := c.Bind(&req); err != nil {
+		return err
+	}
+
+	// validate thông tin gửi lên
+	err := c.Validate(req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, model.Response{
+			StatusCode: http.StatusBadRequest,
+			Message:    err.Error(),
+		})
+	}
+
+	token := c.Get("user").(*jwt.Token)
+	claims := token.Claims.(*model.JwtCustomClaims)
+	user := model.User{
+		UserId:   claims.UserId,
+		FullName: req.FullName,
+		Email:    req.Email,
+	}
+
+	user, err = u.UserRepo.UpdateUser(c.Request().Context(), user)
+	if err != nil {
+		return c.JSON(http.StatusUnprocessableEntity, model.Response{
+			StatusCode: http.StatusUnprocessableEntity,
+			Message:    err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusCreated, model.Response{
+		StatusCode: http.StatusCreated,
+		Message:    "Xử lý thành công",
+		Data:       user,
+	})
 }

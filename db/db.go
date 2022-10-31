@@ -23,7 +23,11 @@ func (s *Sql) Connect() {
 
 	if err := s.Db.Ping(); err != nil {
 		log.Error(err.Error())
+		return
 	}
+
+	fmt.Println("kết nối thành công")
+
 }
 
 func (s *Sql) Close() {
