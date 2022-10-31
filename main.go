@@ -3,6 +3,7 @@ package main
 import (
 	"LearnGoLang2/db"
 	"LearnGoLang2/handler"
+	"LearnGoLang2/helper"
 	"LearnGoLang2/log"
 	"LearnGoLang2/repository/repo_impl"
 	"LearnGoLang2/router"
@@ -30,6 +31,9 @@ func main() {
 	defer sql.Close()
 
 	e := echo.New()
+	structValidator := helper.NewStructValidator()
+	structValidator.RegisterValidate()
+
 	e.Use(middleware.AddTrailingSlash())
 	userHandler := handler.UserHandler{
 		UserRepo: repo_impl.NewUserRepo(sql),
