@@ -26,17 +26,19 @@ CREATE table "repos"
     "updated_at"  Timestamp not null
 );
 
-CREATE TABLE "bookmarks" (
-                             "bid" text PRIMARY KEY,
-                             "user_id" text,
-                             "repo_name" text UNIQUE,
-                             "created_at" TIMESTAMPTZ NOT NULL,
-                             "updated_at" TIMESTAMPTZ NOT NULL
+CREATE TABLE "bookmarks"
+(
+    "bid"        text PRIMARY KEY,
+    "user_id"    text,
+    "repo_name"  text UNIQUE,
+    "created_at" TIMESTAMPTZ NOT NULL,
+    "updated_at" TIMESTAMPTZ NOT NULL
 );
 
 
 --ALTER TABLE "bookmarks" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
-ALTER TABLE "bookmarks" ADD FOREIGN KEY ("repo_name") REFERENCES "repos" ("name");
+ALTER TABLE "bookmarks"
+    ADD FOREIGN KEY ("repo_name") REFERENCES "repos" ("name");
 
 -- +migrate Down
 DROP TABLE bookmarks;

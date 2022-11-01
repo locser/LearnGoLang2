@@ -32,30 +32,42 @@ func (cv *StructValidator) RegisterValidate() {
 		log.Error(err.Error())
 	}
 
-	cv.Validator.RegisterValidation("pwd", func(fl validator.FieldLevel) bool {
+	err := cv.Validator.RegisterValidation("pwd", func(fl validator.FieldLevel) bool {
 		return len(fl.Field().String()) >= 8
 	})
+	if err != nil {
+		return
+	}
 
-	cv.Validator.RegisterTranslation("required", cv.Trans, func(ut ut.Translator) error {
+	err = cv.Validator.RegisterTranslation("required", cv.Trans, func(ut ut.Translator) error {
 		return ut.Add("required", "{0} là bắt buộc", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("required", fe.Field())
 		return t
 	})
+	if err != nil {
+		return
+	}
 
-	cv.Validator.RegisterTranslation("email", cv.Trans, func(ut ut.Translator) error {
+	err = cv.Validator.RegisterTranslation("email", cv.Trans, func(ut ut.Translator) error {
 		return ut.Add("email", "{0} không hợp lệ", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("email", fe.Field())
 		return t
 	})
+	if err != nil {
+		return
+	}
 
-	cv.Validator.RegisterTranslation("pwd", cv.Trans, func(ut ut.Translator) error {
+	err = cv.Validator.RegisterTranslation("pwd", cv.Trans, func(ut ut.Translator) error {
 		return ut.Add("pwd", "Mật khẩu tối thiểu 8 kí tự", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("pwd", fe.Field())
 		return t
 	})
+	if err != nil {
+		return
+	}
 }
 
 func (cv *StructValidator) Validate(i interface{}) error {

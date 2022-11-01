@@ -22,7 +22,7 @@ func init() {
 func main() {
 
 	sql := &db.Sql{
-		Host:     "host.docker.internal", //localhost,
+		Host:     "host.docker.internal", //,localhost, 192.168.1.163, host.docker.internal
 		Port:     5433,
 		UserName: "postgres",
 		Password: "123456",

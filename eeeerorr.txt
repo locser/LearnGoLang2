@@ -1,0 +1,37 @@
+ > [7/7] RUN GOOS=linux go build -o app:
+#12 1.211 model/claims.go:4:2: no required module provides package github.com/dgrijalva/jwt-go; to add it:
+#12 1.211       go get github.com/dgrijalva/jwt-go
+#12 1.211 helper/struct_validator.go:5:2: no required module provides package github.com/go-playground/locales/en; to add it:
+#12 1.211       go get github.com/go-playground/locales/en
+#12 1.211 helper/struct_validator.go:6:2: no required module provides package github.com/go-playground/universal-translator; to add it:
+#12 1.211       go get github.com/go-playground/universal-translator
+#12 1.211 helper/struct_validator.go:7:2: no required module provides package github.com/go-playground/validator/v10; to add it:
+#12 1.211       go get github.com/go-playground/validator/v10
+#12 1.211 helper/struct_validator.go:8:2: no required module provides package github.com/go-playground/validator/v10/translations/en; to add it:
+#12 1.211       go get github.com/go-playground/validator/v10/translations/en
+#12 1.211 helper/job_repo_crawl.go:10:2: no required module provides package github.com/gocolly/colly; to add it:
+#12 1.211       go get github.com/gocolly/colly
+#12 1.211 handler/repo_handler.go:9:2: no required module provides package github.com/google/uuid; to add it:
+#12 1.211       go get github.com/google/uuid
+#12 1.211 db/db.go:5:2: no required module provides package github.com/jmoiron/sqlx; to add it:
+#12 1.211       go get github.com/jmoiron/sqlx
+#12 1.211 log/log.go:12:2: no required module provides package github.com/labstack/echo; to add it:
+#12 1.211       go get github.com/labstack/echo
+#12 1.211 middleware/jwt.go:7:2: no required module provides package github.com/labstack/echo/middleware; to add it:
+#12 1.211       go get github.com/labstack/echo/middleware
+#12 1.211 handler/welcome_handler.go:4:2: no required module provides package github.com/labstack/echo/v4; to add it:
+#12 1.211       go get github.com/labstack/echo/v4
+#12 1.211 db/db.go:6:2: no required module provides package github.com/labstack/gommon/log; to add it:
+#12 1.211       go get github.com/labstack/gommon/log
+#12 1.211 log/log.go:5:2: no required module provides package github.com/lestrrat/go-file-rotatelogs; to add it:
+#12 1.211       go get github.com/lestrrat/go-file-rotatelogs
+#12 1.211 db/db.go:7:2: no required module provides package github.com/lib/pq; to add it:
+#12 1.211       go get github.com/lib/pq
+#12 1.211 helper/struct_validator.go:9:2: no required module provides package github.com/pkg/errors; to add it:
+#12 1.211       go get github.com/pkg/errors
+#12 1.211 log/log.go:14:2: no required module provides package github.com/rifflock/lfshook; to add it:
+#12 1.211       go get github.com/rifflock/lfshook
+#12 1.211 log/log.go:15:2: no required module provides package github.com/sirupsen/logrus; to add it:
+#12 1.211       go get github.com/sirupsen/logrus
+#12 1.211 security/pass.go:4:2: no required module provides package golang.org/x/crypto/bcrypt; to add it:
+#12 1.211       go get golang.org/x/crypto/bcrypt

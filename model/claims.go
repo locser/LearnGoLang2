@@ -1,8 +1,6 @@
 package model
 
-import (
-	"github.com/dgrijalva/jwt-go"
-)
+import jwt "github.com/dgrijalva/jwt-go"
 
 type JwtCustomClaims struct {
 	UserId string
